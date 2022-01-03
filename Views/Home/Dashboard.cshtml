@@ -1,0 +1,10 @@
+﻿
+@{
+    Layout = "LogOut";
+    var data = (Person)ViewData["person"];
+}
+
+
+    <h1>Welcome @data.Name</h1>
+    <h2>Your Description: <br /> @data.UserData</h2>
+    <h2>Logged in time: <br /> @data.LoggedIn</h2>

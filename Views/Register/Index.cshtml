@@ -1,0 +1,332 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery.min.js"></script>
+    <script src="https://markjivko.com/dist/recorder.js"></script>
+
+    <style type="text/css">
+
+        [data-role="controls"] > button {
+            margin: 50px;
+            outline: none;
+            display: block;
+            border: none;
+            background-color: #D9AFD9;
+            background-image: -webkit-gradient(linear, left bottom, left top, from(#D9AFD9), to(#97D9E1));
+            background-image: -o-linear-gradient(bottom, #D9AFD9 0%, #97D9E1 100%);
+            background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            text-indent: -1000em;
+            cursor: pointer;
+            -webkit-box-shadow: 0px 5px 5px 2px rgba(0,0,0,0.3) inset, 0px 0px 0px 30px #fff, 0px 0px 0px 35px #333;
+            box-shadow: 0px 5px 5px 2px rgba(0,0,0,0.3) inset, 0px 0px 0px 30px #fff, 0px 0px 0px 35px #333;
+        }
+
+            [data-role="controls"] > button:hover {
+                background-color: #ee7bee;
+                background-image: -webkit-gradient(linear, left bottom, left top, from(#ee7bee), to(#6fe1f5));
+                background-image: -o-linear-gradient(bottom, #ee7bee 0%, #6fe1f5 100%);
+                background-image: linear-gradient(0deg, #ee7bee 0%, #6fe1f5 100%);
+            }
+
+            [data-role="controls"] > button[data-recording="true"] {
+                background-color: #ff2038;
+                background-image: -webkit-gradient(linear, left bottom, left top, from(#ff2038), to(#b30003));
+                background-image: -o-linear-gradient(bottom, #ff2038 0%, #b30003 100%);
+                background-image: linear-gradient(0deg, #ff2038 0%, #b30003 100%);
+            }
+
+        [data-role="recordings"] > .row {
+            width: auto;
+            height: auto;
+            padding: 20px;
+        }
+
+            [data-role="recordings"] > .row > audio {
+                outline: none;
+            }
+
+            [data-role="recordings"] > .row > a {
+                display: inline-block;
+                text-align: center;
+                font-size: 20px;
+                line-height: 50px;
+                vertical-align: middle;
+                width: 50px;
+                height: 50px;
+                border-radius: 20px;
+                color: #fff;
+                font-weight: bold;
+                text-decoration: underline;
+                background-color: #0093E9;
+                background-image: -webkit-gradient(linear, left bottom, left top, from(#0093E9), to(#80D0C7));
+                background-image: -o-linear-gradient(bottom, #0093E9 0%, #80D0C7 100%);
+                background-image: linear-gradient(0deg, #0093E9 0%, #80D0C7 100%);
+                float: right;
+                margin-left: 20px;
+                cursor: pointer;
+            }
+
+                [data-role="recordings"] > .row > a:hover {
+                    text-decoration: none;
+                }
+
+                [data-role="recordings"] > .row > a:active {
+                    background-image: -webkit-gradient(linear, left top, left bottom, from(#0093E9), to(#80D0C7));
+                    background-image: -o-linear-gradient(top, #0093E9 0%, #80D0C7 100%);
+                    background-image: linear-gradient(180deg, #0093E9 0%, #80D0C7 100%);
+                }
+    </style>
+
+</head>
+
+<div class="text-center">
+    <h1 class="display-4">Register</h1>
+    <input type="text" class="m-2" placeholder="Your full name" id="fullname" />
+    <input type="text" class="m-2" placeholder="User Data" id="userdata" />
+
+</div>
+
+<div class="row d-flex justify-content-center flex-nowrap m-2" id="video_element">
+    <video autoplay width="480" height="360" id="videoCapture"></video>
+</div>
+<div class="row d-flex justify-content-center flex-nowrap m-2">
+    <button id="snap1" style="cursor:pointer">
+        Take photo 1
+    </button>
+    <button id="snap2" style="cursor:pointer">
+        Take photo 2
+    </button>
+    <button id="snap3" style="cursor:pointer">
+        Take photo 3
+    </button>
+    <button id="snap4" style="cursor:pointer">
+        Take photo 4
+    </button>
+
+</div>
+
+<div class="row d-flex justify-content-center flex-nowrap">
+    <img style="vertical-align:top" id="imgCapture1" width="480" height="360" />
+    <img style="vertical-align:top" id="imgCapture2" width="480" height="360" />
+</div>
+
+<div class="row d-flex justify-content-center flex-nowrap">
+    <img style="vertical-align:top" id="imgCapture3" width="480" height="360" />
+    <img style="vertical-align:top" id="imgCapture4" width="480" height="360" />
+</div>
+<br />
+<br />
+<hr />
+<h3><u>Please read the following paragraph slowly(time must be greater than 22 sec)</u></h3>
+
+<h5>
+    School is the place where we learn to read and write.
+    It is the most crucial place for a student, and it helps
+    us to learn new things.
+    The teachers are always helpful and teach us important
+    things in life.
+    We must always be regular to school as missing classes
+    can lead to problems during exams.
+    Schools teach us how to be consistent,punctual.
+    <br /><br />
+    The quick brown fox jumps over the lazy dog.
+</h5>
+
+<div class="row d-flex justify-content-center flex-nowrap" id="holder">
+    
+    <div data-role="controls">
+        <button>Record</button>
+    </div>
+    <div data-role="recordings">
+    </div>
+
+</div>
+
+
+
+<div class="row d-flex justify-content-center flex-nowrap m-4">
+
+    @using (Html.BeginForm("AddPerson", "Register", FormMethod.Post, new { id = "myform" }))
+    {
+        <input type="hidden" name="base64_input_image" id="base64_input_image">
+        <input type="hidden" name="base64_input_audio" id="base64_input_audio">
+        <button type="button" id="register_btn">Register</button>
+    }
+
+</div>
+
+
+
+<script>
+    const video = document.querySelector('video')
+    navigator.mediaDevices.getUserMedia({
+        video: true
+    }).then(stream => video.srcObject = stream);
+    const canvas1 = document.createElement('canvas');
+    const canvas2 = document.createElement('canvas');
+    const canvas3 = document.createElement('canvas');
+    const canvas4 = document.createElement('canvas');
+    //const img = document.querySelector('img');
+
+</script>
+
+<script>
+    document.getElementById('snap1').onclick = function () {
+        canvas1.width = video.videoWidth;
+        canvas1.height = video.videoHeight;
+        canvas1.getContext('2d').drawImage(video, 0, 0);
+        // Other browsers will fall back to image/png
+        $("#imgCapture1").css("visibility", "visible");
+        $("#imgCapture1").attr("src", canvas1.toDataURL('image/png'));
+    }
+
+    document.getElementById('snap2').onclick = function () {
+        canvas2.width = video.videoWidth;
+        canvas2.height = video.videoHeight;
+        canvas2.getContext('2d').drawImage(video, 0, 0);
+        // Other browsers will fall back to image/png
+        $("#imgCapture2").css("visibility", "visible");
+        $("#imgCapture2").attr("src", canvas2.toDataURL('image/png'));
+    }
+    document.getElementById('snap3').onclick = function () {
+        canvas3.width = video.videoWidth;
+        canvas3.height = video.videoHeight;
+        canvas3.getContext('2d').drawImage(video, 0, 0);
+        // Other browsers will fall back to image/png
+        $("#imgCapture3").css("visibility", "visible");
+        $("#imgCapture3").attr("src", canvas3.toDataURL('image/png'));
+    }
+    document.getElementById('snap4').onclick = function () {
+        canvas4.width = video.videoWidth;
+        canvas4.height = video.videoHeight;
+        canvas4.getContext('2d').drawImage(video, 0, 0);
+        // Other browsers will fall back to image/png
+        $("#imgCapture4").css("visibility", "visible");
+        $("#imgCapture4").attr("src", canvas4.toDataURL('image/png'));
+    }
+</script>
+
+<script>
+    document.getElementById('register_btn').onclick = function () {
+
+        var name = document.getElementById("fullname").value;
+        var userdata = document.getElementById("userdata").value;
+
+
+        var dataUrl1 = canvas1.toDataURL('image/png');
+        var dataUrl2 = canvas2.toDataURL('image/png');
+        var dataUrl3 = canvas3.toDataURL('image/png');
+        var dataUrl4 = canvas4.toDataURL('image/png');
+
+        var json = '{"name" : "' + name + '","userData":"' + userdata + '","images" : ["' + dataUrl1 + '", "' + dataUrl2 + '", "' + dataUrl3 + '","' + dataUrl4 + '"]}';
+        document.getElementById("base64_input_image").value = json;
+        document.getElementById("myform").submit();
+
+    }
+</script>
+
+
+<script>
+    jQuery(document).ready(function () {
+        var $ = jQuery;
+        var myRecorder = {
+            objects: {
+                context: null,
+                stream: null,
+                recorder: null
+            },
+            init: function () {
+                if (null === myRecorder.objects.context) {
+                    myRecorder.objects.context = new (
+                        window.AudioContext || window.webkitAudioContext
+                    );
+                }
+            },
+            start: function () {
+                var options = { audio: true, video: false };
+                navigator.mediaDevices.getUserMedia(options).then(function (stream) {
+                    myRecorder.objects.stream = stream;
+                    myRecorder.objects.recorder = new Recorder(
+                        myRecorder.objects.context.createMediaStreamSource(stream),
+                        { numChannels: 1 }
+                    );
+                    myRecorder.objects.recorder.record();
+                }).catch(function (err) { });
+            },
+            stop: function (listObject) {
+                if (null !== myRecorder.objects.stream) {
+                    myRecorder.objects.stream.getAudioTracks()[0].stop();
+                }
+                if (null !== myRecorder.objects.recorder) {
+                    myRecorder.objects.recorder.stop();
+
+                    // Validate object
+                    if (null !== listObject
+                        && 'object' === typeof listObject
+                        && listObject.length > 0) {
+                        // Export the WAV file
+                        myRecorder.objects.recorder.exportWAV(function (blob) {
+                            var url = (window.URL || window.webkitURL)
+                                .createObjectURL(blob)
+
+                            var reader = new FileReader();
+                            reader.readAsDataURL(blob);
+                            reader.onloadend = function () {
+                                var base64data = reader.result;
+                                console.log(base64data);
+                                document.getElementById('base64_input_audio').value = base64data;
+                            }
+
+                            console.log(url)
+
+
+
+                            // Prepare the playback
+                            var audioObject = $('<audio controls id="audioCapture"></audio>')
+                                .attr('src', url);
+
+                            // Prepare the download link
+                            var downloadObject = $('<a>&#9660;</a>')
+                                .attr('href', url)
+                                .attr('download', 'signup.wav');
+
+                            // Wrap everything in a row
+                            var holderObject = $('<div class="row"></div>')
+                                .append(audioObject)
+                                .append(downloadObject);
+
+                            // Append to the list
+                            listObject.append(holderObject);
+                        });
+                    }
+                }
+            }
+        };
+
+        // Prepare the recordings list
+        var listObject = $('[data-role="recordings"]');
+
+        // Prepare the record button
+        $('[data-role="controls"] > button').click(function () {
+            // Initialize the recorder
+            myRecorder.init();
+
+            // Get the button state
+            var buttonState = !!$(this).attr('data-recording');
+
+            // Toggle
+            if (!buttonState) {
+                $(this).attr('data-recording', 'true');
+                myRecorder.start();
+            } else {
+                $(this).attr('data-recording', '');
+                myRecorder.stop(listObject);
+            }
+        });
+    });
+</script>
